@@ -52,7 +52,7 @@
             <div class="col-3 ">
               <div class="site-logo">
                 <a href="index.html" class="font-weight-bold">
-                  <img src="images/logo.png" alt="Image" class="img-fluid">
+                  <img src="img/safeGDL.png" alt="Image" class="img-fluid">
                 </a>
               </div>
             </div>
@@ -66,11 +66,9 @@
 
               <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav ml-auto ">
-                  <li class="active"><a href="index.html" class="nav-link">Home</a></li>
-                  <li><a href="about.html" class="nav-link">About</a></li>
-                  <li><a href="trips.html" class="nav-link">Trips</a></li>
-                  <li><a href="blog.html" class="nav-link">Blog</a></li>
-                  <li><a href="contact.html" class="nav-link">Contact</a></li>
+                  <li class="active"><a href="index.html" class="nav-link">Mapa</a></li>
+                  <li><a href="about.html" class="nav-link">Delito</a></li>
+                  <li><a href="trips.html" class="nav-link">Contacto Emergencia</a></li>
                 </ul>
               </nav>
             </div>
