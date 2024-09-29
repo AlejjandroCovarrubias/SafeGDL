@@ -339,6 +339,8 @@ h1, h2, h3, h4, h5,
     .hover-bg-enlarge .bg-image-md-height {
       height: 300px !important; } }
 
+
+
 .bg-image {
   background-size: cover;
   background-position: center center;
@@ -457,7 +459,10 @@ h1, h2, h3, h4, h5,
       text-transform: uppercase;
       color: #fff; }
       .site-navbar .site-logo a img {
-        width: 73px; }
+        /* Cambiar el tamaño del logo */
+        border-radius: 50%;
+        object-fit: cover;
+        width: 100px; }
     @media (max-width: 991.98px) {
       .site-navbar .site-logo {
         float: left;
@@ -479,13 +484,13 @@ h1, h2, h3, h4, h5,
         margin-left: 15px;
         margin-right: 15px;
         padding: 20px 0px;
-        color: #000 !important;
+        color: #fff !important;
         display: inline-block;
         text-decoration: none !important; }
         .site-navbar .site-navigation .site-menu > li > a:hover {
           color: #efba6c; }
       .site-navbar .site-navigation .site-menu > li.active > a {
-        color: #efba6c !important; }
+        color: #fff !important; }
     .site-navbar .site-navigation .site-menu .has-children {
       position: relative; }
       .site-navbar .site-navigation .site-menu .has-children > a {
@@ -780,8 +785,10 @@ h1, h2, h3, h4, h5,
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 1; }
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.4)); /* Gradiente de oscuro a menos oscuro */
+      z-index: 1;
+  }
+  
   .site-section-cover.inner-page,
   .site-section-cover.inner-page .container > .row {
     height: auto;
@@ -1924,3 +1931,21 @@ h1, h2, h3, h4, h5,
     background: rgba(239, 186, 108, 0.1);
     bottom: -20px;
     right: -20px; }
+
+    .site-navbar {
+      background-color: #000; 
+      color: #fff; 
+  }
+  
+/* Cambia el color de los elementos a rojo cuando se pase el mouse por encima */
+.site-navbar .site-navigation .site-menu > li > a:hover {
+  color: red !important; /* Cambia el color del texto a rojo al pasar el mouse */
+}
+
+.site-navbar .site-navigation .site-menu .has-children .dropdown > li > a:hover {
+  color: red !important; /* Cambia el color de los elementos del submenú a rojo al pasar el mouse */
+}
+
+
+
+
