@@ -56,13 +56,13 @@
 
       <header class="site-navbar site-navbar-target" role="banner">
 
-        <div class="container">
+        <div style="padding-left: 200px; padding-right: 200px;">
           <div class="row align-items-center position-relative">
 
-            <div class="col-3 ">
+            <div class="col-3">
               <div class="site-logo">
-                <a href="index.html" class="font-weight-bold">
-                  <img src="img/safeGDL.png" alt="Image" class="img-fluid">
+                <a href="index.html">
+                  <img src="{{asset('img/safeGDL.png')}}" alt="Image" class="img-fluid">
                 </a>
               </div>
             </div>
