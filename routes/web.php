@@ -9,9 +9,6 @@ Route::get('/', function () {
 
 Route::resource('delito', DelitoController::class);
 
-Route::get('/delito', function () {
-    return view('delito.formulario');
-});
 
 Route::get('/map', function () {
     return view('map.show');
