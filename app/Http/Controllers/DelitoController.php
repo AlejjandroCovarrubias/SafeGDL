@@ -11,7 +11,8 @@ class DelitoController extends Controller
 {
     /**
      * Display a listing of the resource.
-     */
+    */
+
     public function index()
     {
         $delitos= Auth::user()->delito;  
@@ -39,18 +40,23 @@ class DelitoController extends Controller
             'longitud'=>'required|regex:/^-?\d{1,3}\.\d+$/',
         ]);
 
-        $delito = new Delito();
+        if(Auth::user())
+        {
+            $delito = new Delito();
 
-        $delito->user_id = Auth::id();
-        $delito->tipoDelito = $request->tipoDelito;
-        $delito->descripcion = $request->descripcion;
-        $delito->fecha = $request->fecha;
-        $delito->latitud = $request->latitud;
-        $delito->longitud = $request->longitud;
+            $delito->user_id = Auth::id();
+            $delito->tipoDelito = $request->tipoDelito;
+            $delito->descripcion = $request->descripcion;
+            $delito->fecha = $request->fecha;
+            $delito->latitud = $request->latitud;
+            $delito->longitud = $request->longitud;
 
-        $delito->save();
+            $delito->save();
+
+            return redirect()->action([DelitoController::class, 'index']);
+        }
         
-        return redirect()->action([DelitoController::class, 'index']);
+        return back();
     }
 
     /**
