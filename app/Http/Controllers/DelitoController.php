@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Delito;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class DelitoController extends Controller
 {
@@ -12,8 +14,8 @@ class DelitoController extends Controller
      */
     public function index()
     {
-        //
-        return view('delito.formulario');
+        $delitos= Delito::all();
+        return view('delito.index', compact('delitos'));
     }
 
     /**
@@ -21,7 +23,7 @@ class DelitoController extends Controller
      */
     public function create()
     {
-        //
+        return view('delito.formulario');
     }
 
     /**
@@ -29,7 +31,21 @@ class DelitoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+       // dd($request->all());
+
+        $request->validate([
+            'tipoDelito'=>'required|string|max:255',
+            'descripcion'=>'required|string',
+            'fecha'=>'required|date',
+            'latitud'=>'required|regex:/^-?\d{1,3}\.\d+$/',
+            'longitud'=>'required|regex:/^-?\d{1,3}\.\d+$/',
+        ]);
+
+        $request->merge(['user_id' => Auth::id()]);
+        Delito::create($request->all());
+        
+        return view('testing');
     }
 
     /**
