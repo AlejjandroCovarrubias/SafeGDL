@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Delito;
-use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class DelitoController extends Controller
@@ -14,7 +14,7 @@ class DelitoController extends Controller
      */
     public function index()
     {
-        $delitos= Delito::all();
+        $delitos= Auth::user()->delito;  
         return view('delito.index', compact('delitos'));
     }
 
@@ -31,9 +31,6 @@ class DelitoController extends Controller
      */
     public function store(Request $request)
     {
-
-       // dd($request->all());
-
         $request->validate([
             'tipoDelito'=>'required|string|max:255',
             'descripcion'=>'required|string',
@@ -42,10 +39,18 @@ class DelitoController extends Controller
             'longitud'=>'required|regex:/^-?\d{1,3}\.\d+$/',
         ]);
 
-        $request->merge(['user_id' => Auth::id()]);
-        Delito::create($request->all());
+        $delito = new Delito();
+
+        $delito->user_id = Auth::id();
+        $delito->tipoDelito = $request->tipoDelito;
+        $delito->descripcion = $request->descripcion;
+        $delito->fecha = $request->fecha;
+        $delito->latitud = $request->latitud;
+        $delito->longitud = $request->longitud;
+
+        $delito->save();
         
-        return view('testing');
+        return redirect()->action([DelitoController::class, 'index']);
     }
 
     /**
