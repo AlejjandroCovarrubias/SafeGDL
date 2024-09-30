@@ -1947,5 +1947,80 @@ h1, h2, h3, h4, h5,
 }
 
 
+.col-9.d-flex {
+  position: relative; 
+}
+
+
+#perfil-icon {
+  position: absolute; 
+  right: -100px; 
+  top: 50%;
+  transform: translateY(-50%); 
+  color: red; 
+  cursor: pointer; 
+}
+
+#menu-opciones {
+  position: absolute;
+  top: 60%; 
+  right: -70px; 
+  background-color: white;
+  border: 1px solid #ccc;
+  display: none; 
+  padding: 10px;
+  z-index: 1001;
+}
+
+#menu-opciones ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#menu-opciones ul li {
+  padding: 5px 0;
+}
+
+#menu-opciones ul li a {
+  color: #333; /* Color del texto del menú */
+  text-decoration: none;
+}
+
+@keyframes pulsate {
+  0%, 100% {
+      transform: scale(1); /* Estado original */
+  }
+  50% {
+      transform: scale(1.2); /* Tamaño al agrandarse */
+  }
+}
+
+#panic-button {
+  position: fixed;
+  bottom: 50px; /* Distancia desde la parte inferior */
+  right: 40px;  /* Distancia desde el lado derecho */
+  background-color: #ff0000; 
+  padding: 10px; 
+  border-radius: 50%; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  z-index: 1000000000; 
+  cursor: pointer;
+  animation: pulsate 1s infinite ease-in-out;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+#panic-button svg {
+  stroke: white; 
+}
+
+#panic-button:hover {
+  transform: scale(1.1);
+  background-color: #cc0000; 
+}
+
+
+
+
 
 
