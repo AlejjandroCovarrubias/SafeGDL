@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let startlat = null;
     let startlng = null;
     let graph = {};
-    let isCalculatingRoute = false; // Nueva variable para evitar cálculos duplicados
+    let isCalculatingRoute = false;
 
     function obtenerCoordenadas() {
         if (navigator.geolocation) {
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const overpassUrl = 'http://overpass-api.de/api/interpreter';
         const query = `
             [out:json];
-            node(around:50, ${lat}, ${lng});  // Busca nodos dentro de un radio de 50 metros
+            node(around:80, ${lat}, ${lng});  // Busca nodos dentro de un radio de 50 metros
             out body;`;
         try {
             const response = await axios.get(overpassUrl, {
@@ -129,8 +129,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const obtNodos = async (startlat, startlng, end) => {
     const startNode = await getClosestNode(startlat, startlng);
     const endNode = await getClosestNode(end.lat, end.lng);
-    return { startNode, endNode }; // Devuelve un objeto con ambos nodos
+    return { startNode, endNode }; 
 };
+
+async function getCoordinatesFromNodeId(nodeId) {
+    try {
+        const response = await axios.get(`https://api.openstreetmap.org/api/0.6/node/${nodeId}.json`);
+        if (response.data && response.data.elements && response.data.elements.length > 0) {
+            const node = response.data.elements[0];
+            const coordinates = { lat: node.lat, lng: node.lon };
+            console.log(`Coordenadas del nodo ${nodeId}:`, coordinates);
+            return coordinates;
+        } else {
+            console.error(`No se encontraron datos para el nodo con ID ${nodeId}`);
+            return null;
+        }
+    } catch (error) {
+        console.error(`Error al obtener los datos del nodo con ID ${nodeId}:`, error);
+        return null;
+    }
+}
+
 
 
     const calcularRuta = async (end) => {
@@ -144,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
             worker.onmessage = function (e) {
                 const result = e.data;
                 const path = [];
-                let currentNode = endNode;
+                let currentNode = endNode.id;
 
                 console.log(endNode);
                 console.log("Grafo:", graph);
@@ -157,22 +176,25 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("Nodo actual:", currentNode);
                     if (!(currentNode in result.previous)) {
                         console.error(`El nodo ${currentNode} no se encuentra en previous.`);
-                        break; // Sal del bucle si el nodo no está presente
+                        break;
                     }
                     path.unshift(currentNode);
                     currentNode = result.previous[currentNode];
                 }
 
+                const waypoint = Promise.all(path.map(async point => {
+                    const coords = await getCoordinatesFromNodeId(point);
+                    console.log(coords);
+                    return L.latLng(coords.lat, coords.lng);
+                }));
+                
                 routingControl = L.Routing.control({
-                    waypoints: path.map(point => {
-                        const coords = point.split(',');
-                        return L.latLng(parseFloat(coords[0]), parseFloat(coords[1]));
-                    }),
+                    waypoints: waypoint,  // Waypoints ya resueltos
                     routeWhileDragging: true,
                     geocoder: L.Control.Geocoder.nominatim()
                 }).addTo(map);
-
-                isCalculatingRoute = false; // Marca que ha terminado el cálculo
+                
+                isCalculatingRoute = false;
             };
 
             worker.onerror = function (error) {
@@ -181,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error('Archivo:', error.filename);
                 console.error('Línea:', error.lineno);
                 console.error('Columna:', error.colno);
-                isCalculatingRoute = false; // Marca que ha terminado el cálculo en caso de error
+                isCalculatingRoute = false;
             };            
         });
     }
