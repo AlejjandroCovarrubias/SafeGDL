@@ -1,8 +1,9 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Inicializamos el mapa
+document.addEventListener("DOMContentLoaded", function () {
     let map = L.map('map').setView([20.659249, -103.325971], 16);
     let startlat = null;
     let startlng = null;
+    let graph = {};
+    let isCalculatingRoute = false; // Nueva variable para evitar cálculos duplicados
 
     function obtenerCoordenadas() {
         if (navigator.geolocation) {
@@ -12,31 +13,29 @@ document.addEventListener("DOMContentLoaded", function() {
                 startlat = lat;
                 startlng = lng;
                 actCoords(lat, lng);
-                console.log(lat,lng);
-            }, function(error) {
-                console.error("ERROR: No localizacion");
+            }, function (error) {
+                console.error("ERROR: No localización");
             }, {
                 enableHighAccuracy: true,
                 timeout: 5000,
-                maximumAge: 0 // Para que no use info del cache
+                maximumAge: 0
             });
         }
     }
 
     let marker;
 
-    function actCoords(lat,lng){
-        if(marker){
+    function actCoords(lat, lng) {
+        if (marker) {
             map.removeLayer(marker);
         }
 
-        marker = L.marker([lat,lng]).addTo(map)
-            .bindPopup('Estás aquí')
+        marker = L.marker([lat, lng]).addTo(map)
+            .bindPopup('Estás aquí');
     }
 
     obtenerCoordenadas();
-    
-    // Capa de mapa
+
     const layer = L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${key}`, {
         tileSize: 512,
         zoomOffset: -1,
@@ -45,9 +44,8 @@ document.addEventListener("DOMContentLoaded", function() {
         crossOrigin: true
     }).addTo(map);
 
-    let routingControl; // Variable para almacenar el control de enrutamiento
+    let routingControl;
 
-    // Control de búsqueda con Nominatim
     const searchControl = L.Control.geocoder({
         collapsed: false,
         placeholder: 'Buscar...',
@@ -60,32 +58,131 @@ document.addEventListener("DOMContentLoaded", function() {
                 limit: 5,
             }
         })
-    }).on('markgeocode', function(e) {
+    }).on('markgeocode', function (e) {
         const latlng = e.geocode.center;
         L.marker(latlng).addTo(map)
             .bindPopup(e.geocode.name)
             .openPopup();
         map.setView(latlng, 16);
-        
-        // Borra la ruta anterior si existe
+
         if (routingControl) {
-            map.removeControl(routingControl); // Elimina el control anterior
+            map.removeControl(routingControl);
         }
-        
-        // Aquí puedes agregar la lógica para calcular la ruta
-        calcularRuta(latlng); // calcula ruta al nuevo marcador
+
+        calcularRuta(latlng);
     }).addTo(map);
 
-    // Función para calcular la ruta
-    function calcularRuta(end) {
-        routingControl = L.Routing.control({
-            waypoints: [
-                L.latLng(startlat,startlng),
-                L.latLng(end.lat, end.lng)
-            ],
-            routeWhileDragging: true,
-            geocoder: L.Control.Geocoder.nominatim()
-        }).addTo(map);
+    const fetchOSMData = async () => {
+        const response = await fetch(`http://overpass-api.de/api/interpreter?data=[out:json];(way["highway"](around:1000, ${startlat}, ${startlng}););out;`);
+        const data = await response.json();
+        return data;
+    };
+
+    const calculateDistance = (element) => {
+        return 1; 
+    };
+
+    const createGraph = (osmData) => {
+        const graph = {};
+        osmData.elements.forEach(element => {
+            if (element.type === 'way') {
+                const nodes = element.nodes;
+                const distance = calculateDistance(element);
+                for (let i = 0; i < nodes.length - 1; i++) {
+                    const from = nodes[i];
+                    const to = nodes[i + 1];
+                    if (!graph[from]) graph[from] = {};
+                    graph[from][to] = distance;
+                    if (!graph[to]) graph[to] = {};
+                    graph[to][from] = distance;
+                }
+            }
+        });
+        return graph;
+    };
+
+    const getClosestNode = async (lat, lng) => {
+        const overpassUrl = 'http://overpass-api.de/api/interpreter';
+        const query = `
+            [out:json];
+            node(around:50, ${lat}, ${lng});  // Busca nodos dentro de un radio de 50 metros
+            out body;`;
+        try {
+            const response = await axios.get(overpassUrl, {
+                params: { data: query }
+            });
+            const nodes = response.data.elements;
+    
+            if (nodes.length > 0) {
+                const closestNode = nodes[0];
+                console.log('Nodo más cercano encontrado:', closestNode);
+                return closestNode;
+            } else {
+                console.log('No se encontraron nodos cercanos.');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error al obtener el nodo más cercano:', error);
+        }
+    };    
+
+    const obtNodos = async (startlat, startlng, end) => {
+    const startNode = await getClosestNode(startlat, startlng);
+    const endNode = await getClosestNode(end.lat, end.lng);
+    return { startNode, endNode }; // Devuelve un objeto con ambos nodos
+};
+
+
+    const calcularRuta = async (end) => {
+        const { startNode, endNode } = await obtNodos(startlat, startlng, end);
+        console.log(startNode.id,endNode.id);
+        fetchOSMData().then(osmData => {
+            graph = createGraph(osmData);
+            const worker = new Worker('/js/worker.js');
+            worker.postMessage({ graph, start: startNode });    
+
+            worker.onmessage = function (e) {
+                const result = e.data;
+                const path = [];
+                let currentNode = endNode;
+
+                console.log(endNode);
+                console.log("Grafo:", graph);
+                console.log("El nodo que buscas está en el grafo:", graph.hasOwnProperty(endNode.id));
+
+                console.log("Distancias:", result.distances);
+                console.log("Precedentes:", result.previous);
+
+                while (currentNode !== null) {
+                    console.log("Nodo actual:", currentNode);
+                    if (!(currentNode in result.previous)) {
+                        console.error(`El nodo ${currentNode} no se encuentra en previous.`);
+                        break; // Sal del bucle si el nodo no está presente
+                    }
+                    path.unshift(currentNode);
+                    currentNode = result.previous[currentNode];
+                }
+
+                routingControl = L.Routing.control({
+                    waypoints: path.map(point => {
+                        const coords = point.split(',');
+                        return L.latLng(parseFloat(coords[0]), parseFloat(coords[1]));
+                    }),
+                    routeWhileDragging: true,
+                    geocoder: L.Control.Geocoder.nominatim()
+                }).addTo(map);
+
+                isCalculatingRoute = false; // Marca que ha terminado el cálculo
+            };
+
+            worker.onerror = function (error) {
+                console.error('Error en Web Worker:');
+                console.error('Mensaje:', error.message);
+                console.error('Archivo:', error.filename);
+                console.error('Línea:', error.lineno);
+                console.error('Columna:', error.colno);
+                isCalculatingRoute = false; // Marca que ha terminado el cálculo en caso de error
+            };            
+        });
     }
 });
-

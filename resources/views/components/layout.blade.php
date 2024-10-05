@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{asset('css/owl.theme.default.min.css')}}">
   <link rel="stylesheet" href="{{asset('fonts/flaticon/font/flaticon.css')}}">
   <link rel="stylesheet" href="{{asset('css/aos.css')}}">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- API mapa para consulta  -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
@@ -206,6 +207,7 @@
   <script src="{{asset('js/isotope.pkgd.min.js')}}"></script>
   <script src="{{asset('js/aos.js')}}"></script>
   <script src="{{asset('js/main.js')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   @livewireScripts
   @stack('scripts')
 </body>
