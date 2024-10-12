@@ -79,11 +79,10 @@
 
               <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav ml-auto ">
-                  <li class="active"><a href="/" class="nav-link">Home</a></li>
+                  <li class="active"><a href="/" class="nav-link">Inicio</a></li>
+                  <li class="active"><a href="/" class="nav-link">Mapa</a></li>
                   <li><a href="{{ route('delito.create') }}" class="nav-link">Reportar</a></li>
-                  <li><a href="trips.html" class="nav-link">Trips</a></li>
-                  <li><a href="blog.html" class="nav-link">Blog</a></li>
-                  <li><a href="contact.html" class="nav-link">Contact</a></li>
+                  <li><a href="{{ route('delito.create') }}" class="nav-link">Contacto</a></li>
                 </ul>
               </nav>
 
@@ -133,41 +132,39 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-3">
-            <h2 class="footer-heading mb-3">El template</h2>
+            <h2 class="footer-heading mb-3">Derechos de uso</h2>
             <div class="row">
               <div>
-                <a href="https://themewagon.com/themes/free-bootstrap-4-html5-travel-business-website-template-trips/" target="on_blank">Descarguen el template weyes</a>
+                <ul>
+                  <li>Mapa generado mediante la libreria <a href="">Leftlet</a></li>
+                  <li>Tipo de mapa cargado mediante la API de <a href="">OpenStreetMap</a></li>
+                </ul>
               </div>
             </div>
           </div>
           <div class="col-lg-8 ml-auto">
             <div class="row">
               <div class="col-lg-6 ml-auto">
-                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <h2 class="footer-heading mb-4">Enlaces rápidos</h2>
                 <ul class="list-unstyled">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Testimonials</a></li>
-                  <li><a href="#">Terms of Service</a></li>
-                  <li><a href="#">Privacy</a></li>
-                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#">Inicio</a></li>
+                  <li><a href="#">Mapa</a></li>
+                  <li><a href="#">Reportar</a></li>
+                  <li><a href="#">Mis reportes</a></li>
+                  <li><a href="#">Contacto</a></li>
                 </ul>
               </div>
               <div class="col-lg-6">
-                <h2 class="footer-heading mb-4">Newsletter</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt odio iure animi ullam quam, deleniti rem!</p>
-                <form action="#" class="d-flex" class="subscribe">
-                  <input type="text" class="form-control mr-3" placeholder="Email">
-                  <input type="submit" value="Send" class="btn btn-primary">
-                </form>
+                <h2 class="footer-heading mb-4">Redes sociales</h2>
+                <p>Para notificaciones y demás información relacionada con la aplicación, te recomendamos seguirnos en nuestras redes.</p>
+                <ul class="list-unstyled">
+                  <a href="#"><img src="{{asset('img/instagram_icon.png')}}" width="8%"/></a>
+                  <a href="#" class="pl-3"><img src="{{asset('img/twitter_icon.png')}}" width="8%"/></a>
+                  <a href="#" class="pl-3"><img src="{{asset('img/tiktok_icon.png')}}" width="8%"/></a>
+                </ul>
               </div>
-
             </div>
           </div>
-        </div>
-        <div class="row pt-5 mt-5 text-center">
-          <div class="col-md-12">
-          </div>
-
         </div>
       </div>
     </footer>
