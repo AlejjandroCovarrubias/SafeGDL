@@ -64,7 +64,7 @@ class DelitoController extends Controller
      */
     public function show(Delito $delito)
     {
-        //
+        return view('delito.bienvenida');
     }
 
     /**

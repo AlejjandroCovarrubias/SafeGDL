@@ -13,12 +13,7 @@
                     <input type="datetime-local" id="fecha" name="fecha">
                 </div>
                 <div class="form-group">
-                    <label for="longitudlatitud">Ingresa la latitud</label>
-                    <input type="text" class="form-control" id="latitud" name="latitud">
-                </div>
-                <div class="form-group">
-                    <label for="longitud">Ingresa la longitud</label>
-                    <input type="text" class="form-control" id="longitud" name="longitud">
+                
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Describe el delito</label>

@@ -1811,7 +1811,8 @@ h1, h2, h3, h4, h5,
     z-index: -1;
     font-weight: 900 !important;
     font-size: 5rem;
-    color: #efefef; }
+    color: #efefef;
+    white-space: nowrap; }
     .heading-39101 .backdrop.text-center {
       left: 50%;
       -webkit-transform: translateX(-50%);

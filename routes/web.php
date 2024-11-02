@@ -4,6 +4,10 @@ use App\Http\Controllers\DelitoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    return view('delito.bienvenida');
+});
+
+Route::get('/mapa', function () {
     return view('testing');
 });
 
