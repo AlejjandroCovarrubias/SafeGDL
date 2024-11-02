@@ -16,4 +16,12 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testSum()
+    {
+        $math = new Math();
+        $this->assertEquals(4, $math->sum(2, 2));
+        $this->assertEquals(10, $math->sum(7, 3));
+        $this->assertEquals(-1, $math->sum(2, -3));
+    }
 }
