@@ -69,31 +69,41 @@
             </div>
           </div>
 
-            <div class="col-9  text-right">
-              
-
-              <span class="d-inline-block d-lg-none"><a href="#" class="text-white site-menu-toggle js-menu-toggle py-5 text-white"><span class="icon-menu h3 text-white"></span></a></span>
-
-              
-
-              <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
-                <ul class="site-menu main-menu js-clone-nav ml-auto ">
-                  <li class="active"><a href="/" class="nav-link">Home</a></li>
-                  <li><a href="{{ route('delito.create') }}" class="nav-link">Reportar</a></li>
-                  <li><a href="trips.html" class="nav-link">Trips</a></li>
-                  <li><a href="blog.html" class="nav-link">Blog</a></li>
-                  <li><a href="contact.html" class="nav-link">Contact</a></li>
-                </ul>
-              </nav>
+          <div class="col-9  text-right">
 
 
-            <a href="#" id="panic-button" class="emergency-icon">
+            <span class="d-inline-block d-lg-none"><a href="#" class="text-white site-menu-toggle js-menu-toggle py-5 text-white"><span class="icon-menu h3 text-white"></span></a></span>
+
+
+
+            <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav ml-auto ">
+                <li class="active"><a href="/" class="nav-link">Home</a></li>
+                <li><a href="{{ route('delito.create') }}" class="nav-link">Reportar</a></li>
+                <li><a href="trips.html" class="nav-link">Trips</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+              </ul>
+            </nav>
+
+            <a href="#" id="share-button" class="location-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin-house">
+                <path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z" />
+                <path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2" />
+                <path d="M18 22v-3" />
+                <circle cx="10" cy="10" r="3" />
+              </svg>
+            </a>
+
+
+            <a href="tel:911" id="panic-button" class="emergency-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-call">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                 <path d="M14.05 2a9 9 0 0 1 8 7.94" />
                 <path d="M14.05 6A5 5 0 0 1 18 10" />
               </svg>
             </a>
+
 
 
             <a href="#" id="perfil-icon" style="color: red;">
@@ -187,6 +197,43 @@
       const icon = document.getElementById('perfil-icon');
       if (menu.style.display === 'block' && !menu.contains(event.target) && !icon.contains(event.target)) {
         menu.style.display = 'none';
+      }
+    });
+  </script>
+
+<script>
+    document.getElementById('share-button').addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // Verifica si el navegador soporta la API de geolocalización
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Crea un enlace para compartir en Google Maps
+            const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            
+            // Comparte el enlace en la consola o usa navigator.share si está disponible
+            if (navigator.share) {
+              navigator.share({
+                title: 'Mi ubicación actual',
+                text: 'Aquí está mi ubicación actual:',
+                url: googleMapsUrl
+              }).then(() => console.log('Ubicación compartida exitosamente'))
+                .catch(console.error);
+            } else {
+              // Alternativamente, abre la URL en una nueva pestaña
+              window.open(googleMapsUrl, '_blank');
+            }
+          },
+          function(error) {
+            alert('No se pudo obtener la ubicación: ' + error.message);
+          }
+        );
+      } else {
+        alert('La geolocalización no está soportada en este navegador.');
       }
     });
   </script>

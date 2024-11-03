@@ -19,6 +19,14 @@ class DelitoController extends Controller
         return view('delito.index', compact('delitos'));
     }
 
+    public function mostrarTodosLosDelitos()
+    {
+        $delitos = Delito::with('user')->get();
+        return view('moderador.VistaMod', compact('delitos'));
+    }
+    
+
+
     /**
      * Show the form for creating a new resource.
      */

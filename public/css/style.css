@@ -2019,6 +2019,30 @@ h1, h2, h3, h4, h5,
   background-color: #cc0000; 
 }
 
+#share-button {
+  position: fixed;
+  bottom: 150px; /* Distancia desde la parte inferior (encima del botón de pánico) */
+  right: 40px;   /* Distancia desde el lado derecho */
+  background-color: #007bff; /* Color azul */
+  padding: 10px; 
+  border-radius: 50%; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  z-index: 1000000000; 
+  cursor: pointer;
+  animation: pulsate 1s infinite ease-in-out;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+#share-button svg {
+  stroke: white; 
+}
+
+#share-button:hover {
+  transform: scale(1.1);
+  background-color: #0056b3; /* Color más oscuro al pasar el cursor */
+}
+
+
 
 
 
