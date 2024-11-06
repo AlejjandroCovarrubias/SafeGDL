@@ -87,8 +87,6 @@ class GraphHopperService
             'ch.disable' => true,
             'custom_model' => $customModel
         ]);
-          
-        dd($response->body());
 
         return $response->json();
     }
