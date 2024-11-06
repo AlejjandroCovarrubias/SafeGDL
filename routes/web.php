@@ -14,6 +14,7 @@ Route::get('/map', function () {
     return view('map.show');
 });
 
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -23,3 +24,9 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/moderador/delitos', [DelitoController::class, 'mostrarTodosLosDelitos'])->name('moderador.delitos');
+
+
+
+

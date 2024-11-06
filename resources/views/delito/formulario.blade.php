@@ -4,7 +4,7 @@
             <h3 class="mb-5">Reportar delito</h3>
             <form action="{{ route('delito.store') }}" method="POST">
                 @csrf 
-                <div class="form-group">
+                
                     <label for="tipoDelito">¿Qué tipo de delito fue?</label>
                     <select class="form-control" id="tipoDelito" name="tipoDelito">
                         <option value="" disabled selected>Selecciona el tipo de delito</option>
@@ -14,7 +14,6 @@
                         <option value="Fraude">Fraude</option>
                         <option value="Acoso">Acoso</option>
                     </select>
-                </div>
                 <div class="form-group">
                     <label for="fecha">Ingresa la fecha y la hora aproximada en que ocurrió el delito</label><br>
                     <input type="datetime-local" id="fecha" name="fecha" class="form-control">
