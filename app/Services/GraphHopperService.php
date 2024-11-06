@@ -38,6 +38,11 @@ class GraphHopperService
             ]
         ];
         
+        /**
+         * POR CADA REPORTE - 10%
+         * SI SON > DE 10 REPORTES, DIRECTAMENTE 0
+         */
+
         $bannedAreas = [
             [-104.360123, 19.771217, 0.5],
             [-104.360273, 19.771459, 1],
@@ -74,78 +79,17 @@ class GraphHopperService
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post('https://graphhopper.com/api/1/route?key=c0fbc711-8aed-46f6-a9d9-e716549382a5', [
-            'profile' => 'car',
+            'profile' => 'foot',
             'points' => [
                 explode(',', $pointA),
                 explode(',', $pointB)
             ],
             'ch.disable' => true,
             'custom_model' => $customModel
-        ]);   
-
-        /**
-         * $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post('https://graphhopper.com/api/1/route?key=c0fbc711-8aed-46f6-a9d9-e716549382a5', [
-            'profile' => 'car',
-            'points' => [
-                explode(',', $pointA),
-                explode(',', $pointB)
-            ],
-            'ch.disable' => true,
-            'custom_model' => [
-                'speed' => [
-                    [
-                        'if' => 'in_custom2',
-                        'multiply_by' => '0.01'
-                    ],
-                    [
-                        'if' => 'in_custom1',
-                        'multiply_by' => '0.01'
-                    ]
-                ],
-                'areas' => [
-                    'type' => 'FeatureCollection',
-                    'features' => [
-                        [
-                            'type' => 'Feature',
-                            'id' => 'custom1',
-                            'geometry' => [
-                                'type' => 'Polygon',
-                                'coordinates' => [
-                                    [
-                                        [-104.360252, 19.771454],
-                                        [-104.360247, 19.771459],
-                                        [-104.360257, 19.771459],
-                                        [-104.360257, 19.771449],
-                                        [-104.360252, 19.771454],
-                                    ],
-                                ],
-                            ],
-                            
-                        ],
-                        [
-                            'type' => 'Feature',
-                            'id' => 'custom2',
-                            'geometry' => [
-                                'type' => 'Polygon',
-                                'coordinates' => [
-                                    [
-                                        [-104.360123, 19.771217],
-                                        [-104.360330, 19.771709],
-                                        [-104.360330, 19.771217],
-                                        [-104.360123, 19.771709],
-                                        [-104.360123, 19.771217],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ]
         ]);
-         */
           
+        dd($response->body());
+
         return $response->json();
     }
 }
