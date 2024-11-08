@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\DelitoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RouteController;
+use App\Http\Controllers\DelitoController;
 
 Route::get('/', function () {
     return view('delito.bienvenida');
@@ -13,6 +14,9 @@ Route::get('/mapa', function () {
 
 Route::resource('delito', DelitoController::class);
 
+Route::get('/route', [RouteController::class, 'getRoute']);
+
+Route::get('/generate-geojson', [RouteController::class, 'generateGeoJson']);
 
 Route::get('/map', function () {
     return view('map.show');

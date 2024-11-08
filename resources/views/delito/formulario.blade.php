@@ -26,7 +26,7 @@
 
                 <div class="form-group">
                     <label for="descripcion">Describe el delito</label>
-                    <textarea name="descripcion" id="descripcion" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="descripcion" id="descripcion" cols="30" rows="5" class="form-control"></textarea>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Reportar" class="btn btn-primary btn-md text-white">
@@ -34,5 +34,11 @@
             </form>
         </div>
     </div>
+@push('scripts')
+    <script>
+        const key = 'jY2HEnlUCVqLzq9kOHFe';
+    </script>
+    <script src="{{ asset('js/map.js') }}"></script>
+@endpush
 </x-layout>
 <script src="{{ asset('js/nodoReportado.js') }}"></script>
