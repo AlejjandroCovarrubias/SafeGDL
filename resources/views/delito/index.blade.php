@@ -13,7 +13,7 @@
                         </div>
                     </div>
                 </a>
-                <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
+                <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 23px;"></i>
                 <div class="mb-2 pb-1">
                     <p class="mb-0">{{ Str::limit ($delito->descripcion, 300, '...') }}</p>
                 </div>

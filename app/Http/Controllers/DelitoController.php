@@ -32,6 +32,8 @@ class DelitoController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request);
+
         $request->validate([
             'tipoDelito'=>'required|string|max:255',
             'descripcion'=>'required|string',
