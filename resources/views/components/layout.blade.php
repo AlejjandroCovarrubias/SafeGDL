@@ -41,6 +41,7 @@
   <!-- MAIN CSS -->
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
+  @toastifyCss
   @livewireStyles
 
 </head>
@@ -210,6 +211,7 @@
   <script src="{{asset('js/main.js')}}"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   @livewireScripts
+  @toastifyJs
   @stack('scripts')
 </body>
 

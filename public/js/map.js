@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         geocoder.on('markgeocode', function(e) {
             const latLng = e.geocode.center;
+            toastify().success('Localización encontrada');
             console.log('Coordenadas de búsqueda:', latLng);
             const pointA = `${latLng.lng},${latLng.lat}`; 
             const pointB = `${lon_og},${lat_og}`;
@@ -83,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     lastRoute = L.polyline(decodedPoints, { color: 'blue' }).addTo(map);
                     map.fitBounds(lastRoute.getBounds());
                 } else {
-                    alert('No se encontró ninguna ruta.');
+                    toastify().error('No se encontró ninguna ruta');
                 }
             })
             .catch(error => console.error('Error al obtener la ruta:', error));
